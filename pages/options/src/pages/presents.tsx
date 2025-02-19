@@ -1,9 +1,9 @@
-import { Autocomplete, Button, Chip, TextField } from '@mui/material';
+import { Autocomplete, Button, Box, TextField } from '@mui/material';
 import type { GridColDef, GridRowsProp } from '@mui/x-data-grid';
-import { DataGrid, sanitizeFilterItemValue } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import { uuidv4 } from '../utils';
-import { useState } from 'react';
 import useLocalStorageState from 'use-local-storage-state';
+import { useMemo } from 'react';
 
 const initialRows: GridRowsProp = [
   { id: uuidv4(), presentNames: 'Hello', rules: [] },
@@ -12,17 +12,33 @@ const initialRows: GridRowsProp = [
 ];
 
 export const Presents = () => {
-  const [rows, setRows] = useLocalStorageState('rules', {
+  const [rules] = useLocalStorageState('rules', {
     defaultValue: initialRows,
   });
 
+  const [presents, setPresents] = useLocalStorageState('presents', {
+    defaultValue: initialRows,
+  });
+
+  const mergedPresents = useMemo(() => {
+    return presents.map((present) => {
+
+      const mergedRules = present.rules.map((presentRule) => {
+        const rule = rules.find((rule) => rule.id === presentRule.id);
+        return rule;
+      }).filter(Boolean);
+
+      return { ...present, rules: mergedRules };
+    });
+  }, [presents, rules]);
+
   const addRow = () => {
-    const newRows = [...rows, { id: uuidv4(), fieldName: '', fieldExpr: '', fieldValue: '' }];
-    setRows(newRows);
+    const newRows = [...presents, { id: uuidv4(), fieldName: '', fieldExpr: '', fieldValue: '' }];
+    setPresents(newRows);
   };
 
   const handleDeleteRow = (id: number) => {
-    setRows(prevRows => prevRows.filter(row => row.id !== id));
+    setPresents(prevRows => prevRows.filter(row => row.id !== id));
   };
 
   const initialColumns: GridColDef[] = [
@@ -33,25 +49,26 @@ export const Presents = () => {
       editable: true,
       flex: 1,
       renderCell: params => {
-        console.log({ params });
 
         return (
           <div>
             <Autocomplete
               value={params.value}
+              getOptionLabel={(option) => option.fieldName}
               onChange={(event, newValue) => {
-                const rowIndex = rows.findIndex(row => row.id === params.id);
+                const rowIndex = presents.findIndex(row => row.id === params.id);
+
 
                 if (rowIndex !== -1) {
-                  const newRows = [...rows];
+                  const newRows = [...presents];
                   newRows[rowIndex].rules = newValue;
-                  setRows(newRows);
+                  setPresents(newRows);
                   console.log({ newRows });
                 }
               }}
               multiple
               id="tags-filled"
-              options={['a', 'b', 'c']}
+              options={rules}
               freeSolo
               renderInput={params => <TextField {...params} />}
             />
@@ -76,17 +93,17 @@ export const Presents = () => {
         Add presents
       </Button>
       <DataGrid
-        rows={rows}
+        rows={mergedPresents}
         columns={columns}
         processRowUpdate={(updatedRow, originalRow) => {
-          const updatedRows = rows.map(row => {
+          const updatedRows = presents.map(row => {
             if (row.id === updatedRow.id) {
               return updatedRow;
             }
             return row;
           });
 
-          setRows(updatedRows);
+          setPresents(updatedRows);
           return updatedRow;
         }}
       />

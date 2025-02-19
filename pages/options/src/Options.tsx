@@ -46,7 +46,7 @@ function App() {
             <Route path="/rules" element={<Rules />} />
             <Route path="/" element={<Rules />} />
           </Routes> */}
-          {/* <Rules /> */}
+          <Rules />
           <Presents />
         </Box>
       </div>
