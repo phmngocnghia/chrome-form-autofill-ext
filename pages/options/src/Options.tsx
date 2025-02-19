@@ -40,14 +40,14 @@ function App() {
           </List>
         </Drawer>
         <Box sx={{ p: 4, width: `calc(100% - ${drawerWidth}px)` }} className="flex flex-col">
-          {/* <Routes>
+          <Routes>
 
             <Route path="/presents" element={<Presents />} />
             <Route path="/rules" element={<Rules />} />
             <Route path="/" element={<Rules />} />
-          </Routes> */}
-          <Rules />
-          <Presents />
+          </Routes>
+          {/* <Rules />
+          <Presents /> */}
         </Box>
       </div>
     </MemoryRouter>
