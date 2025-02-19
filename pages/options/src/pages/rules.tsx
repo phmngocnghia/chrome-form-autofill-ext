@@ -11,9 +11,9 @@ const initialColumns: GridColDef[] = [
 ];
 
 const initialRows: GridRowsProp = [
-  { id: uuidv4(), fieldName: 'Hello', fieldExpr: 'World', fieldValue: 'Demo' },
-  { id: uuidv4(), fieldName: 'DataGridPro', fieldExpr: 'is Awesome' },
-  { id: uuidv4(), fieldName: 'MUI', fieldExpr: 'is Amazing' },
+  { id: 'abd02067-bf90-4384-af4b-f01ad2964f23', fieldName: 'Hello', fieldExpr: 'World', fieldValue: 'Demo' },
+  { id: 'c5c0aac9-ed83-4a7a-8ddd-9a48102166f7', fieldName: 'DataGridPro', fieldExpr: 'is Awesome' },
+  { id: '17955fe1-106a-464f-aca6-8dc57d2b66d0', fieldName: 'MUI', fieldExpr: 'is Amazing' },
 ];
 
 export const Rules = () => {
