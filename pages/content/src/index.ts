@@ -1,5 +1,11 @@
-import { toggleTheme } from '@src/toggleTheme';
+console.log('helooo', chrome);
 
-console.log('content script loaded');
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log(request);
 
-void toggleTheme();
+  if (request.action === 'fill_form') {
+    console.log('hello world');
+  }
+});
+
+
