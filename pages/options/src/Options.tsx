@@ -1,17 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '@src/Options.css';
-import { withErrorBoundary, withSuspense } from '@extension/shared';
 import { Drawer, List, ListItem, ListItemButton, CssBaseline, Box } from '@mui/material';
 import { Presents } from './pages/presents';
-import { MemoryRouter, Link, Route, Routes } from 'react-router';
+import { withErrorBoundary, withSuspense } from '@extension/shared';
+import { MemoryRouter, Link, Route, Routes, useLocation } from 'react-router';
 import { Rules } from './pages/rules';
 
 const drawerWidth = 150;
 
+
+const SetupComponent = () => {
+  const location = useLocation()
+
+  React.useEffect(() => {
+    chrome.storage.sync.set({ lastRoute: location.pathname });
+  }, [location]);
+
+  return null
+}
+
+
 function App() {
+  const [initialRoute, setInitialRoute] = useState(null);
+
+
+
+  useEffect(() => {
+    chrome.storage.sync.get("lastRoute", (data) => {
+
+      setInitialRoute(data.lastRoute || "/"); // Default to "/"
+    });
+  }, []);
+
+  if (initialRoute === null) { return null }
+
+
+
   return (
-    <MemoryRouter>
+    <MemoryRouter initialEntries={[initialRoute]} >
       <div className="flex">
+        <SetupComponent />
         <CssBaseline />
         <Drawer
           sx={{
