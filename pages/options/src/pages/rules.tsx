@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import type { GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import { DataGrid } from '@mui/x-data-grid';
 import { uuidv4 } from '../utils';
-import useLocalStorageState from 'use-local-storage-state';
+import { useChromeStorageLocal } from 'use-chrome-storage';
 
 const initialColumns: GridColDef[] = [
   { field: 'fieldName', headerName: 'Rule Name', editable: true, flex: 1 },
@@ -17,9 +17,7 @@ const initialRows: GridRowsProp = [
 ];
 
 export const Rules = () => {
-  const [rows, setRows] = useLocalStorageState('rules', {
-    defaultValue: initialRows,
-  });
+  const [rows, setRows] = useChromeStorageLocal('rules', initialRows);
 
   const handleDeleteRow = (id: number) => {
     setRows(prevRows => prevRows.filter(row => row.id !== id));

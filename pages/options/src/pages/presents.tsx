@@ -4,6 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { uuidv4 } from '../utils';
 import useLocalStorageState from 'use-local-storage-state';
 import { useMemo } from 'react';
+import { useChromeStorageLocal } from 'use-chrome-storage';
 
 const initialRows: GridRowsProp = [
   { id: uuidv4(), presentNames: 'Hello', rules: [] },
@@ -12,13 +13,8 @@ const initialRows: GridRowsProp = [
 ];
 
 export const Presents = () => {
-  const [rules] = useLocalStorageState('rules', {
-    defaultValue: initialRows,
-  });
-
-  const [presents, setPresents] = useLocalStorageState('presents', {
-    defaultValue: initialRows,
-  });
+  const [rules] = useChromeStorageLocal('rules', []);
+  const [presents, setPresents] = useChromeStorageLocal('presents', initialRows);
 
   const mergedPresents = useMemo(() => {
     return presents.map((present) => {
