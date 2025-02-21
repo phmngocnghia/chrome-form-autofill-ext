@@ -3,6 +3,7 @@ import type { GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import { DataGrid } from '@mui/x-data-grid';
 import { uuidv4 } from '../utils';
 import { useChromeStorageLocal } from 'use-chrome-storage';
+import { useEffect } from 'react';
 
 const initialColumns: GridColDef[] = [
   { field: 'fieldName', headerName: 'Rule Name', editable: true, flex: 1 },
@@ -17,7 +18,15 @@ const initialRows: GridRowsProp = [
 ];
 
 export const Rules = () => {
-  const [rows, setRows] = useChromeStorageLocal('rules', initialRows);
+  const [rows, setRows] = useChromeStorageLocal('rules', undefined);
+
+  useEffect(() => {
+    if (!rows) {
+      setRows(initialRows);
+    }
+  }, [rows])
+
+
 
   const handleDeleteRow = (id: number) => {
     setRows(prevRows => prevRows.filter(row => row.id !== id));

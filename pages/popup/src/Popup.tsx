@@ -15,12 +15,11 @@ const Popup = () => {
   const isLight = theme === 'light';
 
   const injectContentScript = async () => {
-    console.log('hello world');
 
 
     chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
       const activeTab = tabs[0];
-      chrome.tabs.sendMessage(activeTab.id, { "message": "start" });
+      chrome.tabs.sendMessage(activeTab.id, { "action": "fill_form" });
     });
   };
 
