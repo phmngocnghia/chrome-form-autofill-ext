@@ -2,7 +2,6 @@ import { Autocomplete, Button, Box, TextField } from '@mui/material';
 import type { GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import { DataGrid } from '@mui/x-data-grid';
 import { uuidv4 } from '../utils';
-import useLocalStorageState from 'use-local-storage-state';
 import { useMemo } from 'react';
 import { useChromeStorageLocal } from 'use-chrome-storage';
 
@@ -15,6 +14,7 @@ const initialRows: GridRowsProp = [
 export const Presents = () => {
   const [rules] = useChromeStorageLocal('rules', []);
   const [presents, setPresents] = useChromeStorageLocal('presents', initialRows);
+
 
   const mergedPresents = useMemo(() => {
     return presents.map((present) => {
@@ -31,10 +31,6 @@ export const Presents = () => {
   const addRow = () => {
     const newRows = [...presents, { id: uuidv4(), fieldName: '', fieldExpr: '', fieldValue: '' }];
     setPresents(newRows);
-  };
-
-  const handleDeleteRow = (id: number) => {
-    setPresents(prevRows => prevRows.filter(row => row.id !== id));
   };
 
   const initialColumns: GridColDef[] = [
