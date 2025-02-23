@@ -12,16 +12,22 @@ const fillForm = async () => {
   });
 
 
-  const testRule = mergedPresents[0]
+  const testRules = mergedPresents[0].rules
+  const form = document.querySelector('form');
+  if (!form) {
+    return
+  }
 
-
-
+  // fieldExpr is input name, field value is input value. find inputs that match name, and fill the value
+  testRules.forEach((rule) => {
+    const input = form.querySelector(`input[name="${rule.fieldExpr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"]`);
+    if (input) {
+      input.value = rule.fieldValue;
+    }
+  });
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log(request);
-
-
   if (request.action === 'fill_form') {
     console.log('ok');
 

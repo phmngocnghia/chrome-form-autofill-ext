@@ -6,15 +6,15 @@ import { useChromeStorageLocal } from 'use-chrome-storage';
 import { useEffect } from 'react';
 
 const initialColumns: GridColDef[] = [
-  { field: 'fieldName', headerName: 'Rule Name', editable: true, flex: 1 },
+  { field: 'ruleName', headerName: 'Rule Name', editable: true, flex: 1 },
   { field: 'fieldExpr', headerName: 'Field Expression', editable: true, flex: 1 },
   { field: 'fieldValue', headerName: 'Field Value', editable: true, flex: 1 },
 ];
 
 const initialRows: GridRowsProp = [
-  { id: 'abd02067-bf90-4384-af4b-f01ad2964f23', fieldName: 'Hello', fieldExpr: 'World', fieldValue: 'Demo' },
-  { id: 'c5c0aac9-ed83-4a7a-8ddd-9a48102166f7', fieldName: 'DataGridPro', fieldExpr: 'is Awesome' },
-  { id: '17955fe1-106a-464f-aca6-8dc57d2b66d0', fieldName: 'MUI', fieldExpr: 'is Amazing' },
+  { id: 'abd02067-bf90-4384-af4b-f01ad2964f23', ruleName: 'Hello', fieldExpr: 'World', fieldValue: 'Demo' },
+  { id: 'c5c0aac9-ed83-4a7a-8ddd-9a48102166f7', ruleName: 'DataGridPro', fieldExpr: 'is Awesome' },
+  { id: '17955fe1-106a-464f-aca6-8dc57d2b66d0', ruleName: 'MUI', fieldExpr: 'is Amazing' },
 ];
 
 export const Rules = () => {
@@ -29,20 +29,21 @@ export const Rules = () => {
 
 
   const handleDeleteRow = (id: number) => {
-    setRows(prevRows => prevRows.filter(row => row.id !== id));
+    const newRows = rows.filter((row) => row.id !== id);
+    setRows(newRows);
   };
 
   const columns: GridColDef[] = [
     ...initialColumns,
-    // {
-    //   field: 'actions',
-    //   headerName: 'Actions',
-    //   renderCell: params => <button onClick={() => handleDeleteRow(params.row.id)}>Delete</button>,
-    // },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      renderCell: params => <button onClick={() => handleDeleteRow(params.row.id)}>Delete</button>,
+    },
   ];
 
   const addRow = () => {
-    const newRows = [...rows, { id: uuidv4(), fieldName: '', fieldExpr: '', fieldValue: '' }];
+    const newRows = [...rows, { id: uuidv4(), ruleName: '', fieldExpr: '', fieldValue: '' }];
     setRows(newRows);
   };
 

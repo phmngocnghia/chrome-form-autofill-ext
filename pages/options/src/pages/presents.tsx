@@ -15,16 +15,15 @@ export const Presents = () => {
   const [rules] = useChromeStorageLocal('rules', []);
   const [presents, setPresents] = useChromeStorageLocal('presents', initialRows);
 
-
   const mergedPresents = useMemo(() => {
-    return presents.map((present) => {
+    return presents?.map((present) => {
 
-      const mergedRules = present.rules.map((presentRule) => {
+      const mergedRules = present.rules?.map((presentRule) => {
         const rule = rules.find((rule) => rule.id === presentRule.id);
         return rule;
       }).filter(Boolean);
 
-      return { ...present, rules: mergedRules };
+      return { ...present, rules: mergedRules || [] };
     });
   }, [presents, rules]);
 
@@ -69,6 +68,15 @@ export const Presents = () => {
       },
     },
   ];
+
+  const handleDeleteRow = (id: number) => {
+    const rowIndex = mergedPresents.findIndex((row) => row.id === id);
+    if (rowIndex !== -1) {
+      const newRows = [...mergedPresents];
+      newRows.splice(rowIndex, 1);
+      setPresents(newRows);
+    }
+  };
 
   const columns: GridColDef[] = [
     ...initialColumns,
