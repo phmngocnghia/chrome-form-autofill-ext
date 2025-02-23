@@ -9,6 +9,25 @@ import { Rules } from './pages/rules';
 const drawerWidth = 150;
 
 
+interface ListItemButtonProps {
+  text: string;
+  url: string;
+}
+
+const LinkItemButton: React.FC<ListItemButtonProps> = ({ text, url }) => {
+  const location = useLocation();
+  const isActive = location.pathname === url;
+
+  return (
+    <Link className="w-full" to={url} >
+      <ListItemButton selected={isActive}>
+        {text}
+      </ListItemButton>
+    </Link>
+  );
+};
+
+
 const SetupComponent = () => {
   const location = useLocation()
 
@@ -22,6 +41,7 @@ const SetupComponent = () => {
 
 function App() {
   const [initialRoute, setInitialRoute] = useState(null);
+
 
 
 
@@ -53,15 +73,13 @@ function App() {
           variant="permanent"
           open
           anchor="left">
-          <List>
+          <List >
             {['Rules', 'Presents'].map((text, index) => {
               console.log(`/${text.toLowerCase()}`);
 
               return (
-                <ListItem key={text} disablePadding>
-                  <Link className="w-full" to={`/${text.toLowerCase()}`}>
-                    <ListItemButton>{text}</ListItemButton>
-                  </Link>
+                <ListItem key={text} disablePadding >
+                  <LinkItemButton url={`/${text.toLowerCase()}`} text={text} />
                 </ListItem>
               );
             })}
