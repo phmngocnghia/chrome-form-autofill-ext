@@ -6,9 +6,9 @@ import { useMemo } from 'react';
 import { useChromeStorageLocal } from 'use-chrome-storage';
 
 const initialRows: GridRowsProp = [
-  { id: uuidv4(), presentNames: 'Hello', rules: [] },
-  { id: uuidv4(), presentNames: 'DataGridPro', rules: [] },
-  { id: uuidv4(), presentNames: 'MUI', rules: [] },
+  { id: uuidv4(), presentName: 'Hello', rules: [] },
+  { id: uuidv4(), presentName: 'DataGridPro', rules: [] },
+  { id: uuidv4(), presentName: 'MUI', rules: [] },
 ];
 
 export const Presents = () => {
