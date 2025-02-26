@@ -28,7 +28,7 @@ export const Presents = () => {
   }, [presents, rules]);
 
   const addRow = () => {
-    const newRows = [...presents, { id: uuidv4(), fieldName: '', fieldExpr: '', fieldValue: '' }];
+    const newRows = [...presents, { id: uuidv4(), ruleName: '', fieldExpr: '', fieldValue: '' }];
     setPresents(newRows);
   };
 
@@ -45,7 +45,7 @@ export const Presents = () => {
           <div>
             <Autocomplete
               value={params.value}
-              getOptionLabel={(option) => option.fieldName}
+              getOptionLabel={(option) => option.ruleName}
               onChange={(event, newValue) => {
                 const rowIndex = presents.findIndex(row => row.id === params.id);
 
