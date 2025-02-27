@@ -24,18 +24,17 @@ function getInputsByLabelRegex(form, regex) {
 const fillForm = async () => {
   const { presents = [] } = (await chrome.storage.local.get("presents")) || [];
   const { rules = [] } = (await chrome.storage.local.get("rules")) || [];
+  const { selected_present } = (await chrome.storage.local.get("selected_present")) || [];
+  const selectedPresent = presents.find((present) => present.id === selected_present);
+  if (!selectedPresent) {
+    return
+  }
 
-  const mergedPresents = presents.map((present) => {
-    const mergedRules = present.rules.map((presentRule) => {
-      const rule = rules.find((rule) => rule.id === presentRule.id);
-      return rule;
-    }).filter(Boolean);
+  selectedPresent.rules = selectedPresent.rules.map((presentRule) => {
+    const rule = rules.find((rule) => rule.id === presentRule.id);
+    return rule;
+  }).filter(Boolean);
 
-    return { ...present, rules: mergedRules };
-  });
-
-
-  const testRules = mergedPresents[0].rules
   const form = document.querySelector('form');
   if (!form) {
     return
@@ -43,7 +42,7 @@ const fillForm = async () => {
 
 
   // fieldExpr is input name, field value is input value. find inputs that match name, and fill the value
-  testRules.forEach((rule) => {
+  selectedPresent.rules.forEach((rule) => {
     const inputs = getInputsByLabelRegex(form, new RegExp(`^${rule.fieldExpr}`, "i"));
     console.log({ inputs });
 
@@ -55,6 +54,7 @@ const fillForm = async () => {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'fill_form') {
+
 
     fillForm().catch(console.error)
   }
